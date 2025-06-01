@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Celeste Flores – Tarot y Astrología</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Quicksand:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #6a4d8a;
+      --secondary: #b6a3d3;
+      --light: #f6f2fa;
+      --dark: #3d2a54;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      background-color: transparent;
+      overflow: auto;
+      font-family: 'Quicksand', sans-serif;
+      position: relative;
+    }
+
+    body {
+      padding: 40px 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    #counter {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      color: #fff;
+      font-size: 14px;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 6px 10px;
+      border-radius: 6px;
+      z-index: 1000;
+      display: none;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .card {
+      position: relative;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+      max-width: 550px;
+      width: 90%;
+      z-index: 10;
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      width: 100px;
+      height: 100px;
+    }
+
+    .logo-container {
+      position: relative;
+      margin: 0 auto 15px;
+      width: 150px;
+      height: 150px;
+    }
+
+    .logo {
+      width: 100%;
+      height: auto;
+    }
+
+    h1 {
+      text-align: center;
+      font-family: 'Cinzel Decorative', cursive;
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-style: italic;
+      color: var(--secondary);
+      margin-bottom: 15px;
+    }
+
+    .intro-text {
+      text-align: justify;
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+    }
+
+    .services {
+      margin-bottom: 20px;
+    }
+
+    .service-item {
+      background: rgba(246, 242, 250, 0.8);
+      border-right: 4px solid var(--secondary);
+      border-left: 4px solid var(--secondary);
+      border-radius: 6px;
+      padding: 10px 15px;
+      margin-bottom: 10px;      
+      font-size: 0.95rem;
+      text-align: left;
+      line-height: 1.5;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      transform-style: preserve-3d;
+    }
+
+    .service-item:hover {
+      background: rgba(246, 242, 250, 0.9);
+      transform: translateX(5px) rotateY(5deg);
+      box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .service-item strong {
+      display: block;
+      color: var(--primary);
+      margin-bottom: 3px;
+      transition: all 0.3s ease;
+    }
+
+    .service-item:hover strong {
+      color: #5a3d7a;
+    }
+
+    .contact {
+      margin-top: 30px;
+      font-size: 1rem;
+      background: rgba(244, 240, 248, 0.7);
+      padding: 15px;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      font-weight: 600;
+    }
+
+    .contact-item {
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    .contact:hover {
+      background: rgba(244, 240, 248, 0.9);
+      box-shadow: 0 0 15px rgba(182, 163, 211, 0.3);
+    }
+
+    .contact-icon {
+        color: var(--primary);
+        margin-right: 6px;
+        font-size: 24px;        
+    }
+
+    .social-media {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .social-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 30%;
+      background: var(--light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 2.0rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .social-icon::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(182, 163, 211, 0.3), transparent);
+      transition: all 0.5s ease;
+    }
+
+    .social-icon:hover {
+      transform: scale(1.2);
+    }
+
+    .footer {
+      text-align: center;
+      font-style: italic;
+      color: var(--dark);
+      font-size: 0.95rem;
+      margin-top: 10px;
+    }
+
+    .icon-style {
+        text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="counter">Líneas: 0</div>
+  <div class="card">
+    <div class="constellation"></div>
+    <div class="card-content">
+      <div class="logo-container">
+        <img src="logo.png" alt="Logo de Celeste Flores" class="logo">
+      </div>
+
+      <h1>Celeste Flores</h1>
+      <div class="subtitle">Tarot • Astrología • Rituales Sagrados</div>
+
+      <p class="intro-text">Como guía espiritual, te ayudo a descifrar los mensajes del universo a través del tarot, la astrología y rituales energéticos. Juntos iluminaremos tu camino hacia el autoconocimiento y la transformación personal.</p>
+
+      <div class="services">
+        <div class="service-item">
+          <strong>Lecturas de Tarot</strong>
+          Presenciales y a distancia - Claridad y guía para tu camino
+        </div>
+        <div class="service-item">
+          <strong>Cartas Natales</strong>
+          Astrología personalizada - Descubre tu propósito cósmico
+        </div>
+        <div class="service-item">
+          <strong>Rituales Lunares</strong>
+          Alineación con los ciclos naturales - Manifestación y protección
+        </div>
+        <div class="service-item">
+          <strong>Sanación Espiritual</strong>
+          Reconexión con tu esencia - Liberación de bloqueos
+        </div>
+        <div class="service-item">
+          <strong>Acompañamiento</strong>
+          Transformación emocional - Crecimiento consciente
+        </div>
+      </div>
+
+      <div class="contact">
+        <div class="contact-item">
+            <span class="contact-icon">📍</span>
+            <span>Cartagena & Online</span>
+        </div>
+        <div class="contact-item">
+            <span class="contact-icon">📱</span>
+            <span>+57 300 123 4567</span>
+        </div>
+        <div class="contact-item">
+            <span class="contact-icon">✉️</span>
+            <span>celesteflores@email.com</span>
+        </div>
+      </div>
+
+      <div class="social-media">
+        <a href="https://instagram.com/celesteflores" class="social-icon icon-style" target="_blank" aria-label="Instagram">
+          <i class="fab fa-instagram"></i>
+        </a>
+      </div>
+
+      <div class="footer">
+        "Cuando las estrellas alinean, el alma florece"
+      </div>
+    </div>
+  </div>
+  <canvas id="constelacion"></canvas>
+
+  <script>
+    const canvas = document.getElementById("constelacion");
+    const ctx = canvas.getContext("2d");
+    const counter = document.getElementById("counter");
+
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+
+    window.addEventListener("resize", () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+      initStars();
+    });
+
+    const numStars = 80;
+    const stars = [];
+    const connections = [];
+    const maxConnectionsPerStar = 4;
+    let trimmingConnections = false;
+
+    function initStars() {
+      stars.length = 0;
+      connections.length = 0;
+      for (let i = 0; i < numStars; i++) {
+        stars.push(createStar());
+      }
+    }
+
+    function createStar() {
+      const isLarge = Math.random() < 0.15;
+      return {
+        x: Math.random() * width,
+        y: Math.random() * height,
+        radius: isLarge ? 2.5 + Math.random() * 1.5 : 0.5 + Math.random(),
+        dx: (Math.random() - 0.5) * 0.1,
+        dy: (Math.random() - 0.5) * 0.1,
+        color: Math.random() < 0.3 ? "#80cfff" : "#3b82f6",
+        connections: 0
+      };
+    }
+
+    function drawStars() {
+      ctx.clearRect(0, 0, width, height);
+
+      stars.forEach(star => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fillStyle = star.color;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = star.color;
+        ctx.fill();
+      });
+
+      connections.forEach(conn => {
+        if (conn.progress < 1) conn.progress += 0.01;
+        const x = conn.a.x + (conn.b.x - conn.a.x) * conn.progress;
+        const y = conn.a.y + (conn.b.y - conn.a.y) * conn.progress;
+        ctx.beginPath();
+        ctx.setLineDash([4, 6]);
+        ctx.moveTo(conn.a.x, conn.a.y);
+        ctx.lineTo(x, y);
+        ctx.strokeStyle = "rgba(100, 149, 237, 0.3)";
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+        ctx.setLineDash([]);
+      });
+
+      counter.textContent = `Líneas: ${connections.length}`;
+    }
+
+    function removeConnectionForStar(star) {
+      for (let i = 0; i < connections.length; i++) {
+        const conn = connections[i];
+        if (conn.a === star || conn.b === star) {
+          conn.a.connections--;
+          conn.b.connections--;
+          connections.splice(i, 1);
+          return;
+        }
+      }
+    }
+
+    function animate() {
+      drawStars();
+      stars.forEach(star => {
+        star.x += star.dx;
+        star.y += star.dy;
+
+        if (star.x < 0 || star.x > width) star.dx *= -1;
+        if (star.y < 0 || star.y > height) star.dy *= -1;
+      });
+
+      if (trimmingConnections && connections.length > 100) {
+        connections.splice(0, 4);
+      } else if (connections.length >= 200) {
+        trimmingConnections = true;
+      } else if (connections.length <= 100) {
+        trimmingConnections = false;
+      }
+
+      if (!trimmingConnections && Math.random() < 0.01) {
+        const newStar = createStar();
+        stars.push(newStar);
+
+        let connected = 0;
+        for (let i = 0; i < stars.length && connected < maxConnectionsPerStar; i++) {
+          const star = stars[i];
+          const distance = Math.hypot(star.x - newStar.x, star.y - newStar.y);
+          if (distance < 120 && star !== newStar) {
+            if (star.connections >= maxConnectionsPerStar) {
+              removeConnectionForStar(star);
+            }
+            if (newStar.connections >= maxConnectionsPerStar) {
+              removeConnectionForStar(newStar);
+            }
+            if (star.connections < maxConnectionsPerStar && newStar.connections < maxConnectionsPerStar) {
+              connections.push({ a: newStar, b: star, progress: 0 });
+              star.connections++;
+              newStar.connections++;
+              connected++;
+            }
+          }
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    initStars();
+    animate();
+  </script>
+</body>
+</html>
